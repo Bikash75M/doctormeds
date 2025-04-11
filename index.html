@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="DoctorMeds Telemedicine – Connecting local pharmacies to patients for expert doctor consultations.">
+  <meta name="keywords" content="Telemedicine, Doctor Consultation, Pharmacy, Appointment, Healthcare, Digital Health">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DoctorMeds - Telemedicine Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --secondary: #10b981;
+      --accent: #f59e0b;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --card-bg: #ffffff;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+    /* Navigation */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+    .logo-container img {
+      height: 50px;
+      margin-right: 0.5rem;
+    }
+    .logo-container span {
+      font-size: 1.5rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .nav-links a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    /* Section Styling */
+    section {
+      display: none;
+      padding: 3rem 5%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    section.active {
+      display: block;
+    }
+    /* Hero Section (Home) */
+    #home {
+      text-align: center;
+      background: url('https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?auto=format&fit=crop&w=1920') no-repeat center center/cover;
+      color: white;
+      padding: 4rem 5%;
+    }
+    #home h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    #home p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .cta-buttons a {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      margin: 0 0.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .cta-buttons a.primary {
+      background: var(--secondary);
+      color: white;
+    }
+    .cta-buttons a.secondary {
+      border: 2px solid white;
+      color: white;
+    }
+    .cta-buttons a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    /* Form Styling (Appointments with Integrated Patient Details) */
+    form {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    form h2, form h3 {
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    form label {
+      margin-bottom: 0.3rem;
+      display: block;
+      font-weight: 500;
+    }
+    form input, form select, form textarea, form button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    form button {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    form button:hover {
+      background: var(--accent);
+    }
+    /* Box Sections (Consultation & Referral) */
+    .box {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin: 0 auto;
+      max-width: 800px;
+      text-align: center;
+    }
+    .box h2 {
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    .box p {
+      margin-bottom: 1rem;
+    }
+    .box a {
+      display: inline-block;
+      background: var(--secondary);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+    .box a:hover {
+      background: var(--accent);
+    }
+    /* How It Works Section – Redesigned */
+    #howItWorks {
+      background: #eef6ff;
+      padding: 4rem 5%;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .steps-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .step-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, background 0.3s ease;
+      position: relative;
+    }
+    .step-card:hover {
+      transform: translateY(-5px);
+      background: #f1f8ff;
+    }
+    .step-card::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--secondary);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: block;
+      line-height: 40px;
+      font-size: 1.2rem;
+      color: white;
+      text-align: center;
+    }
+    .step1::before { content: "1"; }
+    .step2::before { content: "2"; }
+    .step3::before { content: "3"; }
+    .step4::before { content: "4"; }
+    .step-card h3 {
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    .step-card p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+    /* Doctors Section */
+    .doctors-section {
+      text-align: center;
+    }
+    .doctor-cards {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      justify-content: center;
+    }
+    .doctor-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 8px;
+      flex: 0 0 250px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+    .doctor-card:hover {
+      transform: translateY(-5px);
+    }
+    .doctor-card img {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1rem;
+    }
+    .doctor-card h4 {
+      margin-bottom: 0.3rem;
+      color: var(--dark);
+    }
+    .doctor-card p {
+      font-size: 0.9rem;
+      color: var(--dark);
+    }
+    /* Referral Section (unchanged) */
+    /* About Section with Integrated Resources */
+    #about {
+      padding: 4rem 5%;
+    }
+    .about-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .about-section img {
+      width: 100%;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .about-text h2 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    .about-text ul {
+      list-style: disc;
+      margin-left: 1.5rem;
+    }
+    .subsection {
+      margin-top: 2rem;
+    }
+    .subsection h3 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .testimonial-cards, .faq-items, .blog-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .testimonial-card {
+      background: var(--light);
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      font-style: italic;
+      text-align: center;
+    }
+    .testimonial-card span {
+      font-weight: bold;
+      color: var(--dark);
+    }
+    .faq-item {
+      background: var(--card-bg);
+      padding: 1rem 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .faq-item:hover {
+      background: #eef2ff;
+    }
+    .faq-item p {
+      display: none;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    .faq-item.active p {
+      display: block;
+    }
+    .blog-card {
+      background: var(--light);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+    .blog-card:hover {
+      transform: translateY(-5px);
+    }
+    .blog-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .blog-card .blog-content {
+      padding: 1rem;
+    }
+    .blog-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    .blog-card p {
+      font-size: 0.9rem;
+      color: var(--dark);
+    }
+    /* Registration Form Overlay */
+    .registration-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1001;
+    }
+    .registration-form {
+      background: white;
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 8px;
+      animation: slideIn 0.5s ease;
+    }
+    .registration-form h2 {
+      margin-bottom: 1rem;
+    }
+    .registration-form input,
+    .registration-form select {
+      display: block;
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .registration-form button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .form-step {
+      display: none;
+    }
+    .form-step.active {
+      display: block;
+    }
+    /* Video Consultation Interface */
+    .video-interface {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--dark);
+      z-index: 1002;
+      color: white;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem;
+    }
+    .video-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .doctor-video, .patient-video {
+      font-size: 1.5rem;
+      padding: 1rem;
+      border: 2px solid white;
+      border-radius: 1rem;
+      margin: 0.5rem;
+    }
+    .call-controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .call-controls button {
+      background: var(--accent);
+      border: none;
+      border-radius: 4px;
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .call-controls button:hover {
+      background: var(--primary);
+    }
+    /* Live Chat Modal */
+    .chat-modal {
+      display: none;
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      width: 300px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 1003;
+    }
+    .chat-header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    .chat-body {
+      padding: 1rem;
+      max-height: 300px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+    }
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      outline: none;
+      border-bottom-left-radius: 8px;
+    }
+    .chat-input button {
+      background: var(--secondary);
+      border: none;
+      color: white;
+      padding: 0.8rem 1rem;
+      border-bottom-right-radius: 8px;
+      cursor: pointer;
+    }
+    /* Footer */
+    footer {
+      background: white;
+      padding: 2rem 5%;
+      text-align: center;
+      margin-top: 2rem;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      font-size: 0.9rem;
+    }
+    footer p {
+      color: var(--dark);
+    }
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    /* Animation */
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .about-section {
+        grid-template-columns: 1fr;
+      }
+      #home h1 {
+        font-size: 2rem;
+      }
+      .doctor-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation (Updated Order) -->
+  <nav class="navbar">
+    <div class="logo-container">
+      <!-- Replace with your logo image path -->
+      <img src="images/doctormeds-logo.png" alt="DoctorMeds Logo">
+      <span>DoctorMeds</span>
+    </div>
+    <div class="nav-links">
+      <a onclick="showSection('home')">Home</a>
+      <a onclick="showSection('howItWorks')">How It Works</a>
+      <a onclick="showSection('doctors')">Doctors</a>
+      <a onclick="showSection('referral')">Referral</a>
+      <a onclick="showSection('about')">About</a>
+    </div>
+  </nav>
+
+  <!-- Home Section -->
+  <section id="home" class="active">
+    <h1>Welcome to DoctorMeds</h1>
+    <p>Your link between local pharmacies and expert doctors for timely care, tests, and medication.</p>
+    <div class="cta-buttons">
+      <a onclick="showSection('appointment')" class="primary">Book Appointment</a>
+      <a onclick="showSection('consultation')" class="secondary">Start Consultation</a>
+    </div>
+  </section>
+
+  <!-- How It Works Section (Redesigned) -->
+  <section id="howItWorks">
+    <h2 style="text-align: center; color: var(--primary);">How It Works</h2>
+    <p style="text-align: center; max-width:800px; margin: 1rem auto; color:#555;">Follow our simple 4-step process for a seamless telemedicine experience.</p>
+    <div class="steps-container">
+      <div class="step-card step1">
+        <h3>Book Appointment</h3>
+        <p>Fill out your appointment details along with your patient information.</p>
+      </div>
+      <div class="step-card step2">
+        <h3>Virtual Consultation</h3>
+        <p>Connect instantly with our certified doctors via secure video call.</p>
+      </div>
+      <div class="step-card step3">
+        <h3>Receive Prescription</h3>
+        <p>Your doctor will send you the prescription which is linked directly with our pharmacy network.</p>
+      </div>
+      <div class="step-card step4">
+        <h3>Follow-Up & Referral</h3>
+        <p>If needed, you'll be referred to the nearest hospital or specialist for further care.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Doctors Section -->
+  <section id="doctors" class="doctors-section">
+    <h2>Our Expert Doctors</h2>
+    <div class="doctor-cards">
+      <div class="doctor-card">
+        <img src="https://via.placeholder.com/80" alt="Doctor 1">
+        <h4>Dr. Aisha Khan</h4>
+        <p>General Physician</p>
+      </div>
+      <div class="doctor-card">
+        <img src="https://via.placeholder.com/80" alt="Doctor 2">
+        <h4>Dr. Rohit Sharma</h4>
+        <p>Cardiologist</p>
+      </div>
+      <div class="doctor-card">
+        <img src="https://via.placeholder.com/80" alt="Doctor 3">
+        <h4>Dr. Meera Patel</h4>
+        <p>Pediatrician</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Referral Section -->
+  <section id="referral">
+    <div class="box">
+      <h2>Referral Information</h2>
+      <p>If our consulting doctor deems further evaluation or treatment necessary, you will be referred to the nearest hospital or an appropriate specialist.</p>
+      <p>Contact our support team for assistance or to locate a nearby facility.</p>
+      <a href="tel:108">Call Emergency (108)</a>
+    </div>
+  </section>
+
+  <!-- About Section with Integrated Resources -->
+  <section id="about">
+    <div class="about-section">
+      <div class="about-text">
+        <h2>About DoctorMeds</h2>
+        <p>We connect patients with certified doctors and an integrated pharmacy network to deliver fast, secure, and affordable healthcare services—especially in tier 2/3 cities and rural areas.</p>
+        <ul>
+          <li>Seamless video consultations</li>
+          <li>Real-time pharmacy integration</li>
+          <li>24/7 expert support and live chat</li>
+          <li>User-friendly, localized services</li>
+        </ul>
+      </div>
+      <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=800" alt="Healthcare Illustration">
+    </div>
+    <!-- Testimonials Subsection -->
+    <div class="subsection">
+      <h3>Testimonials</h3>
+      <div class="testimonial-cards">
+        <div class="testimonial-card">
+          <p>"The consultation was smooth and I got my medicine delivered quickly."</p>
+          <span>- Ritu</span>
+        </div>
+        <div class="testimonial-card">
+          <p>"DoctorMeds helped me in my time of need. The video consultation was excellent!"</p>
+          <span>- Amit</span>
+        </div>
+        <div class="testimonial-card">
+          <p>"A reliable platform that connects me to top doctors from my home."</p>
+          <span>- Sneha</span>
+        </div>
+      </div>
+    </div>
+    <!-- FAQ Subsection -->
+    <div class="subsection">
+      <h3>Frequently Asked Questions</h3>
+      <div class="faq-items">
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <h3>How do I register?</h3>
+          <p>You can register by clicking the 'Sign Up' button and filling out your details.</p>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <h3>Is my data secure?</h3>
+          <p>Yes, we use secure and encrypted channels to protect your information.</p>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <h3>Do I need to visit a pharmacy?</h3>
+          <p>You may opt for home delivery based on your location and available services.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Blog/Resources Subsection -->
+    <div class="subsection">
+      <h3>Health Tips & News</h3>
+      <div class="blog-cards">
+        <div class="blog-card">
+          <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800" alt="Blog 1">
+          <div class="blog-content">
+            <h3>5 Tips to Stay Healthy</h3>
+            <p>Discover simple habits to lead a healthier life.</p>
+          </div>
+        </div>
+        <div class="blog-card">
+          <img src="https://images.unsplash.com/photo-1511174511562-5f7f18b874f8?auto=format&fit=crop&w=800" alt="Blog 2">
+          <div class="blog-content">
+            <h3>Telemedicine Trends in 2025</h3>
+            <p>Explore the future of digital healthcare and telemedicine innovations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Appointment Section (Hidden from Top Menu) -->
+  <section id="appointment">
+    <form action="#" method="POST">
+      <h2>Book Your Appointment</h2>
+      <!-- Booking Information -->
+      <label for="role">Booking By:</label>
+      <select id="role" name="role" required>
+        <option value="">Select Role</option>
+        <option value="patient">Patient</option>
+        <option value="pharmacy_staff">Pharmacy Staff</option>
+      </select>
+      <label for="patientName">Patient Full Name:</label>
+      <input type="text" id="patientName" name="patientName" placeholder="Enter full name" required>
+      <label for="contact">Contact Number:</label>
+      <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required>
+      <label for="pharmacy">Select Pharmacy:</label>
+      <select id="pharmacy" name="pharmacy" required>
+        <option value="">Choose Pharmacy</option>
+        <option value="pharmacy1">City Pharmacy (0.8km)</option>
+        <option value="pharmacy2">Medico Corner (1.2km)</option>
+        <option value="pharmacy3">HealthPlus (2.0km)</option>
+        <option value="pharmacy4">Green Cross (2.5km)</option>
+      </select>
+      <label for="appointmentDate">Appointment Date:</label>
+      <input type="date" id="appointmentDate" name="appointmentDate" required>
+      <label for="appointmentTime">Appointment Time:</label>
+      <input type="time" id="appointmentTime" name="appointmentTime" required>
+      <hr style="margin: 2rem 0;">
+      <!-- Integrated Patient Details -->
+      <h3>Patient Details</h3>
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" placeholder="Patient's age" required>
+      <label for="sex">Sex:</label>
+      <select id="sex" name="sex" required>
+        <option value="">Select Sex</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <label for="place">Place/Location:</label>
+      <input type="text" id="place" name="place" placeholder="City/Area" required>
+      <label for="generalExam">General Examination Info:</label>
+      <textarea id="generalExam" name="generalExam" rows="3" placeholder="Describe any findings" required></textarea>
+      <label for="history">Medical History & Previous Medications:</label>
+      <textarea id="history" name="history" rows="3" placeholder="Provide relevant history" required></textarea>
+      <button type="submit">Submit Appointment</button>
+    </form>
+  </section>
+
+  <!-- Consultation Section (Hidden from Top Menu) -->
+  <section id="consultation">
+    <div class="box">
+      <h2>Online Consultation</h2>
+      <p>This area will host your telemedicine consultation interface. Once your appointment is confirmed, our system will connect you to an available doctor.</p>
+      <p><strong>Note:</strong> Please book your appointment before starting the consultation.</p>
+      <a onclick="showSection('appointment')">Book Appointment</a>
+    </div>
+  </section>
+
+  <!-- Registration Form Overlay -->
+  <div class="registration-overlay" id="registrationOverlay">
+    <div class="registration-form">
+      <div class="form-step active" id="step1">
+        <h2>Create Account</h2>
+        <input type="text" placeholder="Full Name" required>
+        <input type="email" placeholder="Email" required>
+        <button onclick="nextStep(2)">Continue →</button>
+      </div>
+      <div class="form-step" id="step2">
+        <h2>Your Health Profile</h2>
+        <select required>
+          <option value="">Select Blood Type</option>
+          <option>A+</option>
+          <option>B+</option>
+          <option>AB+</option>
+          <option>O+</option>
+          <option>A-</option>
+          <option>B-</option>
+          <option>AB-</option>
+          <option>O-</option>
+        </select>
+        <button onclick="nextStep(3)">Continue →</button>
+      </div>
+      <div class="form-step" id="step3">
+        <h2>Choose Pharmacy</h2>
+        <div class="pharmacy-card" onclick="selectPharmacy(this)">
+          🏥 City Pharmacy (0.8km)
+        </div>
+        <button onclick="completeRegistration()">Complete Registration</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Consultation Interface -->
+  <div class="video-interface" id="videoInterface">
+    <div class="video-container">
+      <!-- Video feeds would appear here in a full implementation -->
+    </div>
+    <div class="call-controls">
+      <button onclick="toggleMute()">🎤 Mute</button>
+      <button onclick="endCall()">📞 End Call</button>
+    </div>
+  </div>
+
+  <!-- Live Chat Modal -->
+  <div class="chat-modal" id="chatModal">
+    <div class="chat-header">
+      <span>Live Chat Support</span>
+      <button onclick="toggleChat()" style="background:transparent;border:none;color:white;float:right;font-size:1rem;">&times;</button>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <p><strong>Support:</strong> Hi there! How can we help you today?</p>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Type your message...">
+      <button onclick="sendChat()">Send</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 DoctorMeds Healthcare Pvt Ltd. All rights reserved.</p>
+    <p>
+      <a href="#" onclick="showSection('about')">About Us</a> |
+      <a href="#" onclick="showSection('howItWorks')">How It Works</a> |
+      <a href="#" onclick="toggleFaq(document.querySelector('.faq-item'))">FAQ</a>
+    </p>
+    <p>Disclaimer: DoctorMeds does not replace emergency services. In an emergency, please call 108 or your local emergency number.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    let currentStep = 1;
+    // Show requested section and hide others
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll("section");
+      sections.forEach(section => {
+        if (section.id === sectionId) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
+      // Hide registration overlay if visible
+      document.getElementById('registrationOverlay').style.display = 'none';
+      window.scrollTo(0, 0);
+    }
+    // Registration form management
+    function showRegistration() {
+      document.getElementById('registrationOverlay').style.display = 'block';
+    }
+    function nextStep(step) {
+      document.querySelector(`#step${currentStep}`).classList.remove('active');
+      document.querySelector(`#step${step}`).classList.add('active');
+      currentStep = step;
+    }
+    function selectPharmacy(element) {
+      document.querySelectorAll('.pharmacy-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      element.classList.add('selected');
+      localStorage.setItem('selectedPharmacy', element.innerText);
+    }
+    function completeRegistration() {
+      const fields = document.querySelectorAll('.registration-form input[required], .registration-form select[required]');
+      let valid = true;
+      fields.forEach(field => {
+        if (!field.value) {
+          field.style.borderColor = 'red';
+          valid = false;
+        } else {
+          field.style.borderColor = '#ccc';
+        }
+      });
+      if (valid) {
+        alert('Registration successful!');
+        document.getElementById('registrationOverlay').style.display = 'none';
+      }
+    }
+    // Video consultation functions
+    function startConsultation() {
+      if (!localStorage.getItem('selectedPharmacy')) {
+        alert('Please select a pharmacy first!');
+        showSection('about');
+        return;
+      }
+      document.getElementById('videoInterface').style.display = 'flex';
+      simulateCall();
+    }
+    function simulateCall() {
+      setTimeout(() => {
+        document.querySelector('.video-container').innerHTML = `
+          <div class="doctor-video">👨⚕️ Doctor Connected</div>
+          <div class="patient-video">📸 Your Camera</div>
+        `;
+      }, 2000);
+    }
+    function toggleMute() {
+      alert('Microphone toggled!');
+    }
+    function endCall() {
+      document.getElementById('videoInterface').style.display = 'none';
+      alert('Call ended.');
+    }
+    // FAQ toggle
+    function toggleFaq(element) {
+      element.classList.toggle('active');
+    }
+    // Live Chat functions
+    function toggleChat() {
+      const chat = document.getElementById('chatModal');
+      chat.style.display = chat.style.display === 'block' ? 'none' : 'block';
+    }
+    function sendChat() {
+      const input = document.getElementById('chatInput');
+      const body = document.getElementById('chatBody');
+      if (input.value.trim() !== '') {
+        body.innerHTML += `<p><strong>You:</strong> ${input.value}</p>`;
+        input.value = '';
+        body.scrollTop = body.scrollHeight;
+      }
+    }
+  </script>
+</body>
+</html>
