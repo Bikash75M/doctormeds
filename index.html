@@ -3,7 +3,6 @@
 <head>
   <!-- Android & Mobile Optimization Meta Tags -->
   <meta charset="UTF-8">
-  <!-- Note: maximum-scale and user-scalable settings for an app-like experience -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#2563eb">
@@ -109,7 +108,7 @@
     .nav-links a:hover {
       color: var(--primary);
     }
-    /* Language Toggle Button from Code Block 1 */
+    /* Language Toggle Button */
     #languageToggle {
       background: none;
       border: 1px solid var(--primary);
@@ -141,16 +140,27 @@
         flex-direction: column;
         gap: 1rem;
         background: white;
-        position: absolute;
-        top: 70px;
+        position: fixed;
+        top: 88px;
         left: 0;
         right: 0;
         padding: 1rem;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         border-radius: 8px;
+        z-index: 1000;
       }
       .nav-links.active {
         display: flex;
+      }
+      .nav-links a {
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 4px 0;
+      }
+      #languageToggle {
+        margin-top: 1rem;
+        width: 100%;
+        padding: 0.8rem;
       }
     }
     
@@ -172,7 +182,7 @@
       color: white;
       padding: 4rem 5%;
     }
-  #home h1 {
+    #home h1 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
     }
@@ -202,7 +212,7 @@
       box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     }
     
-    /* Trust Badges (from Code Block 1) */
+    /* Trust Badges */
     .trust-badges {
       display: flex;
       gap: 1rem;
@@ -211,7 +221,7 @@
       flex-wrap: wrap;
     }
     
-    /* SMS Booking Form (from Code Block 1) */
+    /* SMS Booking Form */
     .sms-booking {
       background: #fff;
       padding: 1rem;
@@ -353,6 +363,7 @@
       font-size: 0.95rem;
       color: #555;
     }
+    
     .testimonial-cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -715,21 +726,19 @@
     </div>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="nav-links" id="navLinks">
-      <a onclick="showSection('home')">Home</a>
-      <a onclick="showSection('howItWorks')">How It Works</a>
-      <a onclick="showSection('doctors')">Doctors</a>
-      <a onclick="showSection('referral')">Referral</a>
-      <a onclick="showSection('about')">About</a>
-      <a onclick="showSection('blog')">Health Tips & News</a>
-      <a onclick="showSection('faq')">FAQ</a>
-      <!-- Language toggle button from Code Block 1 -->
-      <button id="languageToggle" onclick="toggleHindi()">हिंदी</button>
+      <a onclick="handleNavClick('home')" data-hindi="होम">Home</a>
+      <a onclick="handleNavClick('howItWorks')" data-hindi="कैसे काम करता है">How It Works</a>
+      <a onclick="handleNavClick('doctors')" data-hindi="डॉक्टर">Doctors</a>
+      <a onclick="handleNavClick('about')" data-hindi="हमारे बारे में">About</a>
+      <a onclick="handleNavClick('blog')" data-hindi="हेल्थ टिप्स & न्यूज">Health Tips & News</a>
+      <a onclick="handleNavClick('faq')" data-hindi="एफएक्यू">FAQ</a>
+      <button id="languageToggle" onclick="toggleLanguage()">हिंदी</button>
     </div>
   </nav>
   
   <!-- Home Section -->
   <section id="home" class="active">
-    <h1 data-hindi="घर बैठे डॉक्टर से सलाह लें">Welcome to DoctorMeds</h1>
+    <h1 data-hindi="टॉप डॉक्टरों से सलाह लें">Welcome to DoctorMeds</h1>
     <p data-hindi="गाँव और छोटे शहरों के लिए मुफ़्त ऑनलाइन डॉक्टर">Your link between local pharmacies and expert doctors for timely care, tests, and medication.</p>
     <div class="cta-buttons">
       <a onclick="showSection('appointment')" class="primary" data-hindi="अपॉइंटमेंट बुक करें">Book Appointment</a>
@@ -740,8 +749,8 @@
     </div>
     <!-- Trust Badges -->
     <div class="trust-badges">
-      <img src="patients.jpg" alt="Government Approved" width="80">
-      <span>5,000+ Patients cured  </span>
+      <img src="patients.jpg" alt="Happy Patients" width="80">
+      <span data-hindi="5,000+ संतुष्त मरीज">5,000+ Patients cured</span>
     </div>
     <!-- SMS Booking Form (Initially Hidden) -->
     <div class="sms-booking" id="smsBooking">
@@ -1050,6 +1059,47 @@
   <!-- Scripts -->
   <script>
     let currentStep = 1;
+    let isHindi = false;
+    const langToggleButton = document.getElementById('languageToggle');
+    
+    // Store original English text in data-english attribute
+    document.querySelectorAll('[data-hindi]').forEach(el => {
+      el.dataset.english = el.textContent;
+    });
+    
+    // Improved Language Toggle
+    function toggleLanguage() {
+      isHindi = !isHindi;
+      document.querySelectorAll('[data-hindi]').forEach(el => {
+        el.textContent = isHindi ? el.dataset.hindi : el.dataset.english;
+      });
+      langToggleButton.textContent = isHindi ? 'English' : 'हिंदी';
+      document.documentElement.lang = isHindi ? 'hi' : 'en-IN';
+    }
+    
+    // Enhanced Mobile Navigation: Handle navigation and auto-close on mobile
+    function handleNavClick(sectionId) {
+      showSection(sectionId);
+      if (window.innerWidth <= 768) {
+        toggleMenu();
+      }
+    }
+    
+    function toggleMenu() {
+      const navLinks = document.getElementById('navLinks');
+      navLinks.classList.toggle('active');
+      
+      // Optionally, close menu when clicking outside (only if open)
+      if (navLinks.classList.contains('active')) {
+        document.addEventListener('click', function closeMenu(e) {
+          if (!e.target.closest('.nav-links') && !e.target.closest('.menu-toggle')) {
+            navLinks.classList.remove('active');
+            document.removeEventListener('click', closeMenu);
+          }
+        });
+      }
+    }
+    
     // Function to display the requested section and hide others
     function showSection(sectionId) {
       const sections = document.querySelectorAll("section");
@@ -1061,11 +1111,18 @@
       document.getElementById('registrationOverlay').style.display = 'none';
       window.scrollTo(0, 0);
     }
-    // Mobile Menu Toggle
-    function toggleMenu() {
-      const navLinks = document.getElementById('navLinks');
-      navLinks.classList.toggle('active');
+    
+    // Initialize SMS Booking
+    function showSMSBooking() {
+      document.getElementById('smsBooking').style.display = 'block';
     }
+    
+    async function sendOTP() {
+      const mobile = document.getElementById('userMobile').value;
+      // Replace with SMS API integration in production
+      alert(`OTP sent to ${mobile}`);
+    }
+    
     // Registration Form Management
     function showRegistration() {
       document.getElementById('registrationOverlay').style.display = 'block';
@@ -1098,6 +1155,7 @@
         document.getElementById('registrationOverlay').style.display = 'none';
       }
     }
+    
     // Video Consultation Functions
     function startConsultation() {
       if (!localStorage.getItem('selectedPharmacy')) {
@@ -1123,11 +1181,13 @@
       document.getElementById('videoInterface').style.display = 'none';
       alert('Call ended.');
     }
+    
     // FAQ Toggle Function
     function toggleFAQ(element) {
       const answer = element.nextElementSibling;
       answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
     }
+    
     // Live Chat Functions
     function toggleChat() {
       const chat = document.getElementById('chatModal');
@@ -1142,21 +1202,7 @@
         body.scrollTop = body.scrollHeight;
       }
     }
-    // Language Toggle Function (updates text to Hindi where data-hindi is defined)
-    function toggleHindi() {
-      document.querySelectorAll('[data-hindi]').forEach(el => {
-        el.textContent = el.dataset.hindi;
-      });
-    }
-    // SMS Booking Flow (from Code Block 1)
-    function showSMSBooking() {
-      document.getElementById('smsBooking').style.display = 'block';
-    }
-    async function sendOTP() {
-      const mobile = document.getElementById('userMobile').value;
-      // In real implementation, integrate an SMS API
-      alert(`OTP sent to ${mobile}`);
-    }
+    
     // Register Service Worker for PWA Functionality
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
