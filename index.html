@@ -3,6 +3,7 @@
 <head>
   <!-- Android & Mobile Optimization Meta Tags -->
   <meta charset="UTF-8">
+  <!-- Note: maximum-scale and user-scalable settings for an app-like experience -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#2563eb">
@@ -38,6 +39,7 @@
       color: var(--dark);
       line-height: 1.6;
     }
+    
     /* ---------------- Emergency Banner ---------------- */
     .emergency-bar {
       background: #dc3545;
@@ -54,6 +56,7 @@
       text-decoration: none;
       font-weight: bold;
     }
+    
     /* ---------------- Navigation ---------------- */
     .navbar {
       display: flex;
@@ -118,19 +121,34 @@
       border-radius: 4px;
       font-size: 0.9rem;
     }
-    /* Mobile Dropdown Menu */
+    
+    /* ---------------- Modern Mobile Hamburger Button ---------------- */
     .menu-toggle {
       display: none;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 44px;
+      height: 44px;
+      background: var(--primary);
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
-      gap: 4px;
+      transition: background 0.3s ease;
+    }
+    .menu-toggle:hover {
+      background: #1b4dbb;
     }
     .menu-toggle span {
-      height: 3px;
-      width: 25px;
-      background: var(--dark);
-      border-radius: 2px;
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      border-radius: 1px;
+      margin: 3px 0;
+      transition: transform 0.3s ease;
     }
+    
     @media (max-width: 768px) {
       .menu-toggle {
         display: flex;
@@ -190,7 +208,8 @@
       font-size: 1.2rem;
       margin-bottom: 2rem;
     }
-    .cta-buttons a {
+    .cta-buttons a,
+    .cta-buttons button {
       display: inline-block;
       padding: 0.8rem 1.5rem;
       margin: 0 0.5rem;
@@ -199,20 +218,25 @@
       font-weight: 600;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .cta-buttons a.primary {
+    .cta-buttons a.primary,
+    .cta-buttons button.primary {
       background: var(--secondary);
       color: white;
+      border: none;
     }
-    .cta-buttons a.secondary {
+    .cta-buttons a.secondary,
+    .cta-buttons button.secondary {
       border: 2px solid white;
       color: white;
+      background: transparent;
     }
-    .cta-buttons a:hover {
+    .cta-buttons a:hover,
+    .cta-buttons button:hover {
       transform: scale(1.05);
       box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     }
     
-    /* Trust Badges */
+    /* ---------------- Trust Badges ---------------- */
     .trust-badges {
       display: flex;
       gap: 1rem;
@@ -221,7 +245,7 @@
       flex-wrap: wrap;
     }
     
-    /* SMS Booking Form */
+    /* ---------------- SMS Booking Form ---------------- */
     .sms-booking {
       background: #fff;
       padding: 1rem;
@@ -724,7 +748,11 @@
       <img src="logo.png" alt="DoctorMeds Logo" class="brand-logo">
       <span class="brand-name">DoctorMeds <span class="stethoscope">🩺</span></span>
     </div>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <button class="menu-toggle" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
     <div class="nav-links" id="navLinks">
       <a onclick="handleNavClick('home')" data-hindi="होम">Home</a>
       <a onclick="handleNavClick('howItWorks')" data-hindi="कैसे काम करता है">How It Works</a>
@@ -743,7 +771,8 @@
     <div class="cta-buttons">
       <a onclick="showSection('appointment')" class="primary" data-hindi="अपॉइंटमेंट बुक करें">Book Appointment</a>
       <a onclick="showSection('consultation')" class="secondary" data-hindi="सम्पर्क करें">Start Consultation</a>
-      <button class="cta-button" onclick="showSMSBooking()">
+      <!-- Making the Talk to Doctor Now button match the other CTAs -->
+      <button class="primary cta-button" onclick="showSMSBooking()">
         <span data-hindi="अभी बात करें">Talk to Doctor Now</span>
       </button>
     </div>
@@ -1088,8 +1117,6 @@
     function toggleMenu() {
       const navLinks = document.getElementById('navLinks');
       navLinks.classList.toggle('active');
-      
-      // Optionally, close menu when clicking outside (only if open)
       if (navLinks.classList.contains('active')) {
         document.addEventListener('click', function closeMenu(e) {
           if (!e.target.closest('.nav-links') && !e.target.closest('.menu-toggle')) {
@@ -1107,7 +1134,6 @@
         section.classList.remove("active");
       });
       document.getElementById(sectionId).classList.add("active");
-      // Hide registration overlay if visible
       document.getElementById('registrationOverlay').style.display = 'none';
       window.scrollTo(0, 0);
     }
